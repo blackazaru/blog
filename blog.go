@@ -19,6 +19,9 @@ func main() {
 			http.Redirect(w, rr, "/home", http.StatusFound)
 			r.HTML(200, "home/index", nil)
 		})
+	m.Get("/about", func(r render.Render) {
+			r.HTML(200, "about/index", nil)
+		})
 
 	m.Run()
 }
