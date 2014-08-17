@@ -1,0 +1,25 @@
+
+<div>
+    {{range $value := .}}
+    <div>
+        <div class="row">
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-8">
+                <h1> {{ $value.Title }}</h1>
+            </div>
+            <div class="col-xs-2">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-8">
+                {{ $value.Content}}
+            </div>
+            <div class="col-xs-2">
+            </div>
+        </div>
+    </div>
+    {{ end }}
+</div>

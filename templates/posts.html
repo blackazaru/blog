@@ -1,0 +1,30 @@
+<form class="form-signin" role="form" method="POST" action="/logout">
+    <h2 class="form-signin-heading">Please LogOut</h2>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Exit</button>
+</form>
+<a href="/write" style="color:WHITE;"><button class="btn btn-lg btn-primary btn-block" type="submit">New post</button></a>
+<div>
+    {{range $value := .}}
+    <div>
+        <div class="row">
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-8">
+                <h1> {{ $value.Title }}</h1>
+            </div>
+            <div class="col-xs-2">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-8">
+                {{ $value.Content}}
+            </div>
+            <div class="col-xs-2">
+                <a href="/edit/{{ $value.Id }}">Edit</a>
+            </div>
+        </div>
+    </div>
+    {{ end }}
+</div>
