@@ -187,7 +187,7 @@ func main() {
 		panic(err)
 	}
 
-	postsCollection = session.DB("blogs").C("posts")
+	postsCollection = session.DB("heroku_app27487147").C("posts")
 	store := sessions.NewCookieStore([]byte("secret123"))
 	m := martini.Classic()
 	//staticOptions := martini.StaticOptions{ Prefix :"assets"}
