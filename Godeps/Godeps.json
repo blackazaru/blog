@@ -3,6 +3,11 @@
 	"GoVersion": "go1.3",
 	"Deps": [
 		{
+			"ImportPath": "code.google.com/p/go.net/html",
+			"Comment": "null-136",
+			"Rev": "28ff664507e453c4455b8c65e701bbe2b2ac980d"
+		},
+		{
 			"ImportPath": "github.com/boj/redistore",
 			"Rev": "d66284b75e77744a31341d0bd47c390c16fbc0bf"
 		},
@@ -43,6 +48,11 @@
 		{
 			"ImportPath": "github.com/oxtoacart/bpool",
 			"Rev": "0f78ff9152c03745d1a47c9023af1b424e202c07"
+		},
+		{
+			"ImportPath": "github.com/russross/blackfriday",
+			"Comment": "v1.2",
+			"Rev": "2e7d690972283d45aadc7a5ea304841e26529433"
 		},
 		{
 			"ImportPath": "labix.org/v2/mgo",

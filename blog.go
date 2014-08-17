@@ -9,10 +9,10 @@ import (
 	"crypto/rand"
 	"fmt"
 	"github.com/martini-contrib/sessions"
-	"os"
+	"github.com/russross/blackfriday"
+	"html/template"
 )
 var postsCollection *mgo.Collection
-
 
 func generateId() string{
 	b := make([]byte, 16)
@@ -40,9 +40,9 @@ func contactsHandler(rnd render.Render)  {
 func blogHandler(rnd render.Render){
 	postDocuments := []models.PostDocument{}
 	postsCollection.Find(nil).All(&postDocuments)
-	posts := []models.Post{}
+	posts := []models.PostDocument{}
 	for _, doc := range postDocuments {
-		post := models.Post{doc.Id, doc.Title, doc.Content}
+		post := models.PostDocument{doc.Id, doc.Title, doc.ContentHtml, doc.ContentMd}
 		posts = append(posts, post)
 	}
 
@@ -61,11 +61,11 @@ func editHandler(rnd render.Render, params martini.Params, session sessions.Sess
 			return
 		}
 
-		post := models.Post{postDocument.Id, postDocument.Title, postDocument.Content}
+		post := models.Post{postDocument.Id, postDocument.Title, postDocument.ContentHtml, postDocument.ContentMd}
 
 		rnd.HTML(200, "write", post)
 	}else{
-		rnd.Redirect("/")
+		rnd.Redirect("/admin")
 	}
 
 
@@ -75,21 +75,22 @@ func writeHandler(rnd render.Render, session sessions.Session){
 	if session.Get("auth") == "OK" {
 		rnd.HTML(200, "write", nil)
 	}else{
-		rnd.Redirect("/")
+		rnd.Redirect("/admin")
 	}
 }
 
 func savePostHandler(rnd render.Render, r *http.Request){
 	id := r.FormValue("id")
 	title := r.FormValue("title")
-	content := r.FormValue("content")
+	contentMd := r.FormValue("content")
+	contentHtml := string(blackfriday.MarkdownBasic([]byte(contentMd)))
 
 
 	if id != "" {
-		postsCollection.UpdateId(id,&models.PostDocument{id, title, content})
+		postsCollection.UpdateId(id,&models.PostDocument{id, title, contentHtml, contentMd})
 	}else{
 		id = generateId()
-		postsCollection.Insert(&models.PostDocument{id, title, content})
+		postsCollection.Insert(&models.PostDocument{id, title, contentHtml, contentMd})
 	}
 	rnd.Redirect("/")
 }
@@ -107,7 +108,7 @@ func deleteHandler(rnd render.Render, params martini.Params , session sessions.S
 
 		rnd.Redirect("/")
 	}else{
-		rnd.Redirect("/")
+		rnd.Redirect("/admin")
 	}
 }
 
@@ -126,7 +127,7 @@ func loginHandler(rnd render.Render, r *http.Request, session sessions.Session){
 		session.Set("auth","OK")
 		rnd.Redirect("/posts")
 	}else{
-		rnd.Redirect("/")
+		rnd.Redirect("/admin")
 	}
 }
 
@@ -143,23 +144,45 @@ func postsHandler(rnd render.Render, session sessions.Session){
 		postsCollection.Find(nil).All(&postDocuments)
 		posts := []models.Post{}
 		for _, doc := range postDocuments {
-			post := models.Post{doc.Id, doc.Title, doc.Content}
+			post := models.Post{doc.Id, doc.Title, doc.ContentHtml, doc.ContentMd}
 			posts = append(posts, post)
 		}
 
 		rnd.HTML(200, "posts", posts)
 	}else{
-		rnd.Redirect("/")
+		rnd.Redirect("/admin")
 	}
 }
 
+func getHtmlHandler(rnd render.Render, r *http.Request){
+	md := r.FormValue("md")
+	htmlBytes := blackfriday.MarkdownBasic([]byte(md))
+	rnd.JSON(200, map[string]interface{}{"html": string(htmlBytes)})
+}
 
+func unescape(x string) interface{} {
+	return template.HTML(x)
+}
 
+func postHandler(rnd render.Render, params martini.Params){
+	id := params["id"]
+	postDocument := models.PostDocument{}
+	err := postsCollection.FindId(id).One(&postDocument)
 
+	if err != nil {
+		rnd.Redirect("/")
+		return
+	}
+
+	post := models.Post{postDocument.Id, postDocument.Title, postDocument.ContentHtml, postDocument.ContentMd}
+
+	rnd.HTML(200, "post", post)
+}
 
 func main() {
 
-	session, err := mgo.Dial(os.Getenv("MONGO_URL"))
+	session, err := mgo.Dial("mongodb://azaru:danik1996@ds063439.mongolab.com:63439/heroku_app27487147")
+	//session, err := mgo.Dial("localhost")
 	if err != nil{
 		panic(err)
 	}
@@ -167,14 +190,17 @@ func main() {
 	postsCollection = session.DB("blogs").C("posts")
 	store := sessions.NewCookieStore([]byte("secret123"))
 	m := martini.Classic()
-	staticOptions := martini.StaticOptions{ Prefix :"assets"}
-	m.Use(martini.Static("assets", staticOptions))
+	//staticOptions := martini.StaticOptions{ Prefix :"assets"}
+
+	m.Use(martini.Static("assets"))
+
+	unescapeFuncMap := template.FuncMap{"unescape": unescape}
 
 	m.Use(render.Renderer(render.Options{
 		Directory:  "templates",                         // Specify what path to load the templates from.
 		Layout:     "layout",                            // Specify a layout template. Layouts can call {{ yield }} to render the current template.
 		Extensions: []string{".tmpl", ".html"},          // Specify extensions to load for templates.
-		//Funcs:      []template.FuncMap{unescapeFuncMap}, // Specify helper function maps for templates to access.
+		Funcs:      []template.FuncMap{unescapeFuncMap}, // Specify helper function maps for templates to access.
 		Charset:    "UTF-8",                             // Sets encoding for json and html content-types. Default is "UTF-8".
 		IndentJSON: true,                                // Output human readable JSON
 	}))
@@ -194,6 +220,8 @@ func main() {
 	m.Post("/login",loginHandler)
 	m.Get("/posts",postsHandler)
 	m.Post("/logout", logoutHandler)
+	m.Post("/gethtml", getHtmlHandler)
+	m.Get("/post/:id", postHandler)
 
 
 	m.Run()
