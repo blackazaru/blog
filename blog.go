@@ -123,7 +123,7 @@ func adminHandler(rnd render.Render, session sessions.Session) {
 func loginHandler(rnd render.Render, r *http.Request, session sessions.Session){
 	login := r.FormValue("login")
 	pass := r.FormValue("password")
-	if login == "azaru" && pass == "ololo" {
+	if login == "azaru" && pass == "2312957danik" {
 		session.Set("auth","OK")
 		rnd.Redirect("/posts")
 	}else{
