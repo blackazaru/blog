@@ -9,6 +9,7 @@ import (
 	"crypto/rand"
 	"fmt"
 	"github.com/martini-contrib/sessions"
+	"os"
 )
 var postsCollection *mgo.Collection
 
@@ -158,7 +159,13 @@ func postsHandler(rnd render.Render, session sessions.Session){
 
 func main() {
 
-	session, err := mgo.Dial("http://powerful-dusk-8034.herokuapp.com")
+	uri,_ := os.Getwd()
+	if uri == "" {
+		fmt.Println("no connection string provided")
+		os.Exit(1)
+	}
+
+	session, err := mgo.Dial(uri)
 	if err != nil{
 		panic(err)
 	}
