@@ -158,12 +158,12 @@ func postsHandler(rnd render.Render, session sessions.Session){
 
 func main() {
 
-	//session, err := mgo.Dial("http://powerful-dusk-8034.herokuapp.com/")
-	//if err != nil{
-//		panic(err)
-//	}
+	session, err := mgo.Dial("powerful-dusk-8034.herokuapp.com")
+	if err != nil{
+		panic(err)
+	}
 
-//	postsCollection = session.DB("blogs").C("posts")
+	postsCollection = session.DB("blogs").C("posts")
 	store := sessions.NewCookieStore([]byte("secret123"))
 	m := martini.Classic()
 	staticOptions := martini.StaticOptions{ Prefix :"assets"}
