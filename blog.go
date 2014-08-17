@@ -158,7 +158,7 @@ func postsHandler(rnd render.Render, session sessions.Session){
 
 func main() {
 
-	session, err := mgo.Dial("localhost")
+	session, err := mgo.Dial("http://powerful-dusk-8034.herokuapp.com/")
 	if err != nil{
 		panic(err)
 	}

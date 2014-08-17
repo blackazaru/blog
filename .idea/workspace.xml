@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2f271b1-4f26-4051-8d8c-604083cc3a25" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Godeps/Godeps.json" afterPath="$PROJECT_DIR$/Godeps/Godeps.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/blog.go" afterPath="$PROJECT_DIR$/blog.go" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Projidea/templates/login.html" afterPath="$PROJECT_DIR$/../Projidea/templates/login.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Projidea/main.go" afterPath="$PROJECT_DIR$/../Projidea/main.go" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Projidea/.idea/misc.xml" afterPath="$PROJECT_DIR$/../Projidea/.idea/misc.xml" />
@@ -32,8 +32,8 @@
       <file leaf-file-name="blog.go" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blog.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.35622317" vertical-offset="1739" max-vertical-offset="3105">
-              <caret line="127" column="25" selection-start-line="127" selection-start-column="25" selection-end-line="127" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.25965664" vertical-offset="2279" max-vertical-offset="3105">
+              <caret line="160" column="70" selection-start-line="160" selection-start-column="70" selection-end-line="160" selection-end-column="70" />
               <folding />
             </state>
           </provider>
@@ -909,8 +909,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blog.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35622317" vertical-offset="1739" max-vertical-offset="3105">
-          <caret line="127" column="25" selection-start-line="127" selection-start-column="25" selection-end-line="127" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.25965664" vertical-offset="2279" max-vertical-offset="3105">
+          <caret line="160" column="70" selection-start-line="160" selection-start-column="70" selection-end-line="160" selection-end-column="70" />
           <folding />
         </state>
       </provider>
