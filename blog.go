@@ -123,7 +123,7 @@ func adminHandler(rnd render.Render, session sessions.Session) {
 func loginHandler(rnd render.Render, r *http.Request, session sessions.Session){
 	login := r.FormValue("login")
 	pass := r.FormValue("password")
-	if login == "azaru" && pass == "2312957danik" {
+	if login == "user" && pass == "pass" {
 		session.Set("auth","OK")
 		rnd.Redirect("/posts")
 	}else{
@@ -181,7 +181,7 @@ func postHandler(rnd render.Render, params martini.Params){
 
 func main() {
 
-	session, err := mgo.Dial("mongodb://azaru:danik1996@ds063439.mongolab.com:63439/heroku_app27487147")
+	session, err := mgo.Dial("mongodb://user:pass@ds063439.mongolab.com:63439/heroku_app27487147")
 	//session, err := mgo.Dial("localhost")
 	if err != nil{
 		panic(err)
