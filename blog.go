@@ -159,13 +159,7 @@ func postsHandler(rnd render.Render, session sessions.Session){
 
 func main() {
 
-	uri,_ := os.Getwd()
-	if uri == "" {
-		fmt.Println("no connection string provided")
-		os.Exit(1)
-	}
-
-	session, err := mgo.Dial(uri)
+	session, err := mgo.Dial(os.Getenv("MONGO_URL"))
 	if err != nil{
 		panic(err)
 	}
