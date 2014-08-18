@@ -181,8 +181,8 @@ func postHandler(rnd render.Render, params martini.Params){
 
 func main() {
 
-	session, err := mgo.Dial("mongodb://user:pass@ds063439.mongolab.com:63439/heroku_app27487147")
-	//session, err := mgo.Dial("localhost")
+	//session, err := mgo.Dial("mongodb://user:pass@ds063439.mongolab.com:63439/heroku_app27487147")
+	session, err := mgo.Dial("localhost")
 	if err != nil{
 		panic(err)
 	}
